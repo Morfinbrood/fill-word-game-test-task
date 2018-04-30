@@ -53,6 +53,9 @@ class Game {
         this.wordscore_guessed_words = 0;
         this.name_localStorage = 'game_records-' + this.size;
         this.selectedLetters = [];
+        this.letterStyleWidth = "width: " + 100 / this.size + "%;";
+        this.padding_botSize = "padding-bottom: " + 100 / this.size + "%;";
+        this.styleOfLetter = "float: left; height: 0; position: relative;" + this.letterStyleWidth + this.padding_botSize;
     }
 
     createGame() {
@@ -68,32 +71,37 @@ class Game {
     }
 
     buildGameField(size) {
-        for (let i = 0; i < size; i++) {
-            this.createHTMLElementOfLetter("word-" + i, i + 1);
+        for (let i = 0; i < size**2; i++) {
+            this.createHTMLElementOfLetter("letter-" + i, i + 1);
         }
-        this.fillTheGameField("a");
+        this.applying_CSS_to_letters(this.styleOfLetter);
+        this.fillTheGameField("assssssss");
     }
 
     autofocusTheFirstLetter() {
-        const theFirstCard = document.getElementById("word-0");
+        const theFirstCard = document.getElementById("letter-0");
         theFirstCard.focus();
     }
 
     createHTMLElementOfLetter(id, number_from_id_for_tab) {
         const newCard = document.createElement('div');
-        newCard.setAttribute("class", "word");
+        newCard.setAttribute("class", "letter");
         newCard.setAttribute("id", id);
         newCard.setAttribute("OnClick", "GameInterface.select('" + id + "')");
         newCard.setAttribute("tabindex", number_from_id_for_tab);
         newCard.setAttribute("onkeydown", "GameInterface.pressEnterOnFocusLetter('" + id + "')");
-        const newSection = document.createElement('section');
-        newSection.setAttribute("class", "word-container");
-        newSection.appendChild(newCard);
-        document.getElementById("game-scene_id").appendChild(newSection);
+        document.getElementById("game-scene_id").appendChild(newCard);
+    }
+
+    applying_CSS_to_letters(style) {
+        const letters = document.getElementsByClassName("letter");
+        for (let i = 0; i < letters.length; i++) {
+            letters[i].setAttribute("style", style);
+        }
     }
 
     fillTheGameField(letter) {
-        const fields = document.getElementsByClassName("word");
+        const fields = document.getElementsByClassName("letter");
         for (let i = 0; i < fields.length; i++) {
             fields[i].textContent = letter;
         }
@@ -108,23 +116,23 @@ class Game {
     }
 
     select(id) {
-        this.htmlAttrToggle(id, "class", "word", "word flipped");
+        this.htmlAttrToggle(id, "class", "letter", "letter selected");
     }
 
     deactivateOnClickElem(id) {
         document.getElementById(id).removeAttribute("OnClick");
     }
 
-    fade_in_card_container(id) {
-        document.getElementById(id).parentElement.setAttribute("class", "word-container fade-in");
+    fade_in_letter_container(id) {
+        document.getElementById(id).parentElement.setAttribute("class", "letter-container fade-in");
     }
 
     htmlAttrToggle(id, attr, toggleClassOn, toggleClassOff) {
-        const word = document.getElementById(id);
-        if (word.getAttribute(attr) === toggleClassOn) {
-            word.setAttribute(attr, toggleClassOff);
+        const letter = document.getElementById(id);
+        if (letter.getAttribute(attr) === toggleClassOn) {
+            letter.setAttribute(attr, toggleClassOff);
         } else {
-            word.setAttribute(attr, toggleClassOn);
+            letter.setAttribute(attr, toggleClassOn);
         }
     }
 
@@ -153,15 +161,6 @@ class Game {
             }
         }
         timerSec();
-    }
-
-    flipDisablerOnTime(ms) {
-        this.enableFlip = false;
-        const that = this;
-        function enabler() {
-            that.enableFlip = true;
-        }
-        setTimeout(enabler, ms);
     }
 
     flipBothCardsWithDelay(id1, id2, ms) {
