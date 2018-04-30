@@ -94,9 +94,9 @@ h1 {
     background: rgb(107, 171, 223);
 }
 
-/* card */
+/* word */
 
-.card-container {
+.word-container {
     float: left;
     width: 10%;
     padding-bottom: 15%;
@@ -104,28 +104,27 @@ h1 {
     position: relative;
 }
 
-.card {
+.word {
     width: 100%;
     height: 100%;
     position: absolute;
 }
 
-.card:focus {
+.word:focus {
     border-top: 5px solid #3e8e41;
 }
 
 /* flipping  */
 
-.card-container {
+.word-container {
     perspective: 800px;
 }
 
-.card {
-    transform-style: preserve-3d;
-    transition: transform 2s;
+.word {
+    background: white;
 }
 
-.card figure {
+.word figure {
     margin: 0;
     display: block;
     position: absolute;
@@ -134,12 +133,8 @@ h1 {
     backface-visibility: hidden;
 }
 
-.card .back {
-    transform: rotateY( 180deg);
-}
-
-.card.flipped {
-    transform: rotateY( 180deg);
+.word.flipped {
+    background: #666;
 }
 
 /* other */
