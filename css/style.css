@@ -1,0 +1,198 @@
+/*  css */
+
+html {
+    height: 100%;
+    font-size: 15pt;
+}
+
+button {
+    cursor: pointer;
+}
+
+.flex-container {
+    display: flex;
+    min-height: 900px;
+    min-width: 580px;
+    max-width: 1180px;
+    height: 95vh;
+    margin: auto;
+}
+
+.content {
+    background: rgb(189, 231, 172);
+    width: 90%;
+    height: 95%;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.press-start-text {
+    color: red;
+    font-weight: bold;
+}
+
+/* main menu section */
+
+h1 {
+    color: rgb(107, 171, 223);
+}
+
+.main-menu {
+    text-align: center;
+}
+
+.main-menu h2 {
+    margin: 20px;
+    font-weight: bold;
+    font-size: 25pt;
+}
+
+.rules-list {
+    box-sizing: border-box;
+    width: 520px;
+    margin: auto;
+    text-align: left;
+    padding: 0px 40px 0px 40px;
+}
+
+.cardBackBut {
+    height: 110px;
+    width: 74px;
+    transition-duration: 0.4s;
+    margin: auto;
+    background-size: contain;
+}
+
+.cardBack-1 {
+    background-image: url(../img/cardBacks/cardBack-1.jpg);
+}
+
+.cardBack-2 {
+    background-image: url(../img/cardBacks/cardBack-2.jpg);
+}
+
+.cardBack-3 {
+    background-image: url(../img/cardBacks/cardBack-3.jpg);
+}
+
+.cardBackBut:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cardBackBut:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.start-button {
+    height: 40px;
+    width: 100px;
+    text-align: center;
+    background: rgb(107, 171, 223);
+}
+
+/* card */
+
+.card-container {
+    float: left;
+    width: 10%;
+    padding-bottom: 15%;
+    margin: 1.25%;
+    position: relative;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.card:focus {
+    border-top: 5px solid #3e8e41;
+}
+
+/* flipping  */
+
+.card-container {
+    perspective: 800px;
+}
+
+.card {
+    transform-style: preserve-3d;
+    transition: transform 2s;
+}
+
+.card figure {
+    margin: 0;
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.card .back {
+    transform: rotateY( 180deg);
+}
+
+.card.flipped {
+    transform: rotateY( 180deg);
+}
+
+/* other */
+
+.timer {
+    width: 120px;
+    height: 50px;
+    color: #f00;
+    font-size: 150%;
+    font-weight: bold;
+    margin: auto;
+    text-align: end;
+}
+
+.win-scene {
+    margin: auto;
+    text-align: center;
+    font-weight: bold;
+    font-size: 25pt;
+    color: rgb(0, 128, 21);
+}
+
+.win-scene ol {
+    width: 480px;
+    box-sizing: border-box;
+    margin: auto;
+    font-size: 17px;
+}
+
+.win-scene li {
+    margin-top: 20px;
+}
+
+.record-time {
+    float: left;
+}
+
+.record-name {
+    float: right;
+    max-width: 380px;
+    overflow: hidden;
+    max-height: 20px;
+}
+
+/* fade in */
+
+@keyframes fadeIn {
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    opacity: 1;
+    animation: fadeIn 2s ease-in 1 forwards;
+}
