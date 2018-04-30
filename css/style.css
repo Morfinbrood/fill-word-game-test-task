@@ -1,35 +1,31 @@
-/*  css */
-
 html {
     height: 100%;
-    font-size: 15pt;
+}
+
+body {
+    overflow: hidden;
+}
+
+.content {
+    position: absolute;
+    font-family: Arial;
+    color: #fff;
+    background: #5aa348;
 }
 
 button {
     cursor: pointer;
 }
 
-.flex-container {
-    display: flex;
-    min-height: 900px;
-    min-width: 580px;
-    max-width: 1180px;
-    height: 95vh;
-    margin: auto;
-}
-
-.content {
-    background: rgb(189, 231, 172);
-    width: 90%;
-    height: 95%;
-    margin: auto;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
 .press-start-text {
     color: red;
     font-weight: bold;
+}
+
+input,
+select,
+button {
+    font-size: 1em;
 }
 
 /* main menu section */
@@ -43,27 +39,21 @@ h1 {
 }
 
 .main-menu h2 {
-    margin: 20px;
     font-weight: bold;
-    font-size: 25pt;
 }
 
 .rules-list {
+    list-style: none;
     box-sizing: border-box;
-    width: 520px;
     margin: auto;
-    text-align: left;
-    padding: 0px 40px 0px 40px;
+    text-align: center;
 }
 
 .start-button {
-    height: 40px;
-    width: 100px;
     text-align: center;
     background: rgb(107, 171, 223);
+    color:red;
 }
-
-/* letter */
 
 /* selecting  */
 
@@ -71,6 +61,8 @@ h1 {
     box-sizing: border-box;
     background: white;
     border: 2px solid black;
+    font-size: 5em;
+    color: black;
 }
 
 .letter.selected {
@@ -80,9 +72,7 @@ h1 {
 /* other */
 
 .timer {
-    width: 120px;
-    height: 50px;
-    color: #f00;
+    color: white;
     font-size: 150%;
     font-weight: bold;
     margin: auto;
@@ -93,7 +83,6 @@ h1 {
     margin: auto;
     text-align: center;
     font-weight: bold;
-    font-size: 25pt;
     color: rgb(0, 128, 21);
 }
 
@@ -101,11 +90,10 @@ h1 {
     width: 480px;
     box-sizing: border-box;
     margin: auto;
-    font-size: 17px;
 }
 
 .win-scene li {
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .record-time {
@@ -114,9 +102,9 @@ h1 {
 
 .record-name {
     float: right;
-    max-width: 380px;
+    /* max-width: 380px; */
     overflow: hidden;
-    max-height: 20px;
+    /* max-height: 20px; */
 }
 
 /* fade in */

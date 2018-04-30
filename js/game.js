@@ -75,7 +75,7 @@ class Game {
             this.createHTMLElementOfLetter("letter-" + i, i + 1);
         }
         this.applying_CSS_to_letters(this.styleOfLetter);
-        this.fillTheGameField("assssssss");
+        this.fillTheGameField("");
     }
 
     autofocusTheFirstLetter() {
