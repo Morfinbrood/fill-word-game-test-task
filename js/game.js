@@ -124,13 +124,16 @@ class Game {
                 this.selectedLetters.pop();
             }
             else {
-                if (Number(currentLetter_id) === Number(lastSelectedLetter_id) + 1 ||
-                    Number(currentLetter_id) === Number(lastSelectedLetter_id) - 1 ||
-                    Number(currentLetter_id) === Number(lastSelectedLetter_id) + this.size ||
-                    Number(currentLetter_id) === Number(lastSelectedLetter_id) - this.size
-                ) {
-                    this.select(currentLetter_id);
-                    this.selectedLetters.push(currentLetter_id);
+                // disable selecting stil selected elements
+                if (this.selectedLetters.indexOf(currentLetter_id) === -1) {
+                    if (Number(currentLetter_id) === Number(lastSelectedLetter_id) + 1 ||
+                        Number(currentLetter_id) === Number(lastSelectedLetter_id) - 1 ||
+                        Number(currentLetter_id) === Number(lastSelectedLetter_id) + this.size ||
+                        Number(currentLetter_id) === Number(lastSelectedLetter_id) - this.size
+                    ) {
+                        this.select(currentLetter_id);
+                        this.selectedLetters.push(currentLetter_id);
+                    }
                 }
             }
         }
