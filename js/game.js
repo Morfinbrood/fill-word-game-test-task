@@ -64,7 +64,6 @@ class Game {
 
     createGame() {
         // this.createWordsMatrix();
-
         this.changeScene("main-menu_id", "game-scene_id");
         this.buildGameField(this.size);
         this.autofocusTheFirstLetter();
@@ -85,18 +84,18 @@ class Game {
     }
 
     autofocusTheFirstLetter() {
-        const theFirstCard = document.getElementById("0");
-        theFirstCard.focus();
+        const theFirstLetter = document.getElementById("0");
+        theFirstLetter.focus();
     }
 
     createHTMLElementOfLetter(id, number_from_id_for_tab) {
-        const newCard = document.createElement('div');
-        newCard.setAttribute("class", "letter");
-        newCard.setAttribute("id", id);
-        newCard.setAttribute("OnClick", "GameInterface.select('" + id + "')");
-        newCard.setAttribute("tabindex", number_from_id_for_tab);
-        newCard.setAttribute("onkeydown", "GameInterface.pressEnterOnFocusLetter('" + id + "')");
-        document.getElementById("game-scene_id").appendChild(newCard);
+        const newLetterElement = document.createElement('div');
+        newLetterElement.setAttribute("class", "letter");
+        newLetterElement.setAttribute("id", id);
+        newLetterElement.setAttribute("OnClick", "GameInterface.select('" + id + "')");
+        newLetterElement.setAttribute("tabindex", number_from_id_for_tab);
+        newLetterElement.setAttribute("onkeydown", "GameInterface.pressEnterOnFocusLetter('" + id + "')");
+        document.getElementById("game-scene_id").appendChild(newLetterElement);
     }
 
     applying_CSS_to_letters(style) {
@@ -178,7 +177,6 @@ class Game {
     select(id) {
         this.htmlAttrToggle(id, "class", "letter", "letter selected");
     }
-
 
     deactivateOnClickElems(collectionID) {
         collectionID.forEach(function (id) {
@@ -374,9 +372,6 @@ class Game {
                     ];
 
         }
-
-
-
         return matrix;
     }
 
@@ -405,7 +400,7 @@ class Game {
             }
 
         }
-        console.log(wordsArr);
+        // console.log(wordsArr);
     }
 
     tryToSetWord(indexWord, startPointIndex) {
