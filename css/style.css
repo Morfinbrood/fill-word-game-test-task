@@ -31,7 +31,7 @@ button {
 /* main menu section */
 
 h1 {
-    color: rgb(107, 171, 223);
+    color: black;
 }
 
 .main-menu {
@@ -56,13 +56,6 @@ h1 {
 }
 
 /* selecting  */
-
-.letter {
-    box-sizing: border-box;
-    background: white;
-    font-size: 5em;
-    color: black;
-}
 
 .letter.selected {
     opacity: 0.5;
