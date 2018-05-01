@@ -52,7 +52,7 @@ h1 {
 .start-button {
     text-align: center;
     background: rgb(107, 171, 223);
-    color:red;
+    color: red;
 }
 
 /* selecting  */
@@ -60,13 +60,12 @@ h1 {
 .letter {
     box-sizing: border-box;
     background: white;
-    border: 2px solid black;
     font-size: 5em;
     color: black;
 }
 
 .letter.selected {
-    background: #666;
+    opacity: 0.5;
 }
 
 /* other */

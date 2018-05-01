@@ -71,11 +71,11 @@ class Game {
     }
 
     buildGameField(size) {
-        for (let i = 0; i < size**2; i++) {
+        for (let i = 0; i < size ** 2; i++) {
             this.createHTMLElementOfLetter("letter-" + i, i + 1);
         }
         this.applying_CSS_to_letters(this.styleOfLetter);
-        this.fillTheGameField("");
+        this.fillTheGameField();
     }
 
     autofocusTheFirstLetter() {
@@ -100,10 +100,10 @@ class Game {
         }
     }
 
-    fillTheGameField(letter) {
+    fillTheGameField(letter = "img/alphabet/A.png") {
         const fields = document.getElementsByClassName("letter");
         for (let i = 0; i < fields.length; i++) {
-            fields[i].textContent = letter;
+            fields[i].setAttribute("style", this.styleOfLetter + "background: url(img/alphabet/A.png) no-repeat; background-size: contain;");
         }
     }
 
