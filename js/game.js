@@ -68,23 +68,41 @@ class Game {
     }
 
     createGame() {
-        this.createFillWordMatrix();
+        this.createWordsMatrix();
         this.changeScene("main-menu_id", "game-scene_id");
         this.buildGameField(this.size);
         this.autofocusTheFirstLetter();
         this.startTimer();
     }
 
-    createFillWordMatrix() {
-        this.takeRandomGuessingWords();
+    createWordsMatrix() {
+        let wordsArr = this.randomizeWords();
+        console.log(wordsArr);
     }
 
-    takeRandomGuessingWords() {
+    randomizeWords() {
         const tryToFindNextLengthWords = this.takeRandomLengthArrToFindWords();
+        const uniqeLengthWords = this.getUniqeLengthWords(tryToFindNextLengthWords);
+        const wordsSortByLength = this.getFilterWordData(tryToFindNextLengthWords, uniqeLengthWords);
+
+        let resultWordsArr = [];
+
+        tryToFindNextLengthWords.forEach((wordLength, i) => {
+            let index = uniqeLengthWords.indexOf(wordLength);
+            resultWordsArr.push(wordsSortByLength[index][Game.randomInteger(1, wordsSortByLength[index].length)])
+        });
+
+        return resultWordsArr;
+    }
+
+    getUniqeLengthWords(tryToFindNextLengthWords) {
         function onlyUnique(value, index, self) {
             return self.indexOf(value) === index;
         }
-        let uniqeLengthWords = tryToFindNextLengthWords.filter(onlyUnique);
+        return tryToFindNextLengthWords.filter(onlyUnique);
+    }
+
+    getFilterWordData(tryToFindNextLengthWords, uniqeLengthWords) {
         // deleting all word who can't be in our fill-word
         let sortedWordsByLength = [];
         for (let i = 0; i < uniqeLengthWords.length; i++) {
@@ -96,25 +114,9 @@ class Game {
                 innerArr.push(word);
             }
         });
+        this.dataWords = null;
 
-        let count = 0;
-        let index = 0;
-        let resultWordsArr = [];
-        // while (tryToFindNextLengthWords.length !== 0 && count < 10000) {
-        //     count++;
-        //     index++;
-        //     let indexWordInVocab = Game.randomInteger(1, this.dataWords.length);
-        //     console.log(this.dataWords[indexWordInVocab].length);
-        //     if (this.dataWords[indexWordInVocab].length === tryToFindNextLengthWords[index]) {
-        //         tryToFindNextLengthWords.shift();
-        //         resultWordsArr.push(this.dataWords[indexWordInVocab]);
-        //     }
-
-        // }
-
-        // console.log(resultWordsArr);
-
-
+        return sortedWordsByLength;
     }
 
     static randomInteger(min, max) {
