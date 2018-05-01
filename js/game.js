@@ -57,6 +57,13 @@ class Game {
         this.padding_botSize = "padding-bottom: " + 100 / this.size + "%;";
         this.styleOfLetter = "float: left; height: 0; position: relative;" + this.letterStyleWidth + this.padding_botSize;
         this.selectedLetters = [];
+
+        //hardcoded table 3x3
+        this.wordsMatrix = [
+            { "letter": "D", "word": "DOG" }, { "letter": "O", "word": "DOG" }, { "letter": "G", "word": "DOG" },
+            { "letter": "C", "word": "CAT" }, { "letter": "W", "word": "COW" }, { "letter": "O", "word": "COW" },
+            { "letter": "A", "word": "CAT" }, { "letter": "T", "word": "CAT" }, { "letter": "C", "word": "COW" }
+        ]
     }
 
     createGame() {
@@ -76,7 +83,7 @@ class Game {
             this.createHTMLElementOfLetter(i, i + 1);
         }
         this.applying_CSS_to_letters(this.styleOfLetter);
-        this.fillTheGameField();
+        this.fillTheGameField(this.wordsMatrix);
     }
 
     autofocusTheFirstLetter() {
@@ -101,10 +108,11 @@ class Game {
         }
     }
 
-    fillTheGameField(letter = "img/alphabet/A.png") {
+    fillTheGameField(wordsMatrix) {
         const fields = document.getElementsByClassName("letter");
         for (let i = 0; i < fields.length; i++) {
-            fields[i].setAttribute("style", this.styleOfLetter + "background: url(img/alphabet/A.png) no-repeat; background-size: contain;");
+            const letterFromMatrix = wordsMatrix[i].letter;
+            fields[i].setAttribute("style", this.styleOfLetter + "background: url(img/alphabet/" + letterFromMatrix + ".png) no-repeat; background-size: contain;");
         }
     }
 
