@@ -58,6 +58,7 @@ class Game {
         this.styleOfLetter = "float: left; height: 0; position: relative;" + this.letterStyleWidth + this.padding_botSize;
         this.selectedLetters = [];
 
+        this.dataWords = globalData;
         //hardcoded table 3x3
         this.wordsMatrix = [
             { "letter": "D", "word": "DOG" }, { "letter": "O", "word": "DOG" }, { "letter": "G", "word": "DOG" },
@@ -67,10 +68,82 @@ class Game {
     }
 
     createGame() {
+        this.createFillWordMatrix();
         this.changeScene("main-menu_id", "game-scene_id");
         this.buildGameField(this.size);
         this.autofocusTheFirstLetter();
         this.startTimer();
+    }
+
+    createFillWordMatrix() {
+        this.takeRandomGuessingWords();
+    }
+
+    takeRandomGuessingWords() {
+        const tryToFindNextLengthWords = this.takeRandomLengthArrToFindWords();
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+        let uniqeLengthWords = tryToFindNextLengthWords.filter(onlyUnique);
+        // deleting all word who can't be in our fill-word
+        let sortedWordsByLength = [];
+        for (let i = 0; i < uniqeLengthWords.length; i++) {
+            sortedWordsByLength[i] = [];
+        }
+        this.dataWords.forEach(word => {
+            if (uniqeLengthWords.indexOf(word.length) !== -1) {
+                let innerArr = sortedWordsByLength[uniqeLengthWords.indexOf(word.length)];
+                innerArr.push(word);
+            }
+        });
+
+        let count = 0;
+        let index = 0;
+        let resultWordsArr = [];
+        // while (tryToFindNextLengthWords.length !== 0 && count < 10000) {
+        //     count++;
+        //     index++;
+        //     let indexWordInVocab = Game.randomInteger(1, this.dataWords.length);
+        //     console.log(this.dataWords[indexWordInVocab].length);
+        //     if (this.dataWords[indexWordInVocab].length === tryToFindNextLengthWords[index]) {
+        //         tryToFindNextLengthWords.shift();
+        //         resultWordsArr.push(this.dataWords[indexWordInVocab]);
+        //     }
+
+        // }
+
+        // console.log(resultWordsArr);
+
+
+    }
+
+    static randomInteger(min, max) {
+        let rand = min - 0.5 + Math.random() * (max - min + 1)
+        rand = Math.round(rand);
+        return rand;
+    }
+
+    takeRandomLengthArrToFindWords() {
+        let resultLength = [];
+        let remainingLetters = this.leftLetters;
+        while (remainingLetters > 0) {
+            let findNextWordQualityLetters;
+            if (remainingLetters >= 3) {
+                let max = remainingLetters;
+                if (max > 10) {
+                    max = 10;
+                }
+                findNextWordQualityLetters = Game.randomInteger(3, max)
+                remainingLetters = remainingLetters - findNextWordQualityLetters;
+                resultLength.push(findNextWordQualityLetters);
+            }
+            else {
+                if (remainingLetters !== 0) {
+                    remainingLetters = remainingLetters + resultLength.pop();
+                }
+            }
+        }
+        return resultLength;
     }
 
     changeScene(currentScene, nextScene) {
