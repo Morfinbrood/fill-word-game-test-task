@@ -36,7 +36,7 @@ class GameInterface {
     }
 
     static startGame() {
-        const size = GameInterface.getSizeFromUserInput();
+        const size = Number(GameInterface.getSizeFromUserInput());
         const user_data = GameInterface.getUserDataFromInputs();
         this.game_match = new Game(size, user_data);
         this.game_match.createGame();
@@ -56,6 +56,7 @@ class Game {
         this.letterStyleWidth = "width: " + 100 / this.size + "%;";
         this.padding_botSize = "padding-bottom: " + 100 / this.size + "%;";
         this.styleOfLetter = "float: left; height: 0; position: relative;" + this.letterStyleWidth + this.padding_botSize;
+        this.selectedLetters = [];
     }
 
     createGame() {
@@ -72,14 +73,14 @@ class Game {
 
     buildGameField(size) {
         for (let i = 0; i < size ** 2; i++) {
-            this.createHTMLElementOfLetter("letter-" + i, i + 1);
+            this.createHTMLElementOfLetter(i, i + 1);
         }
         this.applying_CSS_to_letters(this.styleOfLetter);
         this.fillTheGameField();
     }
 
     autofocusTheFirstLetter() {
-        const theFirstCard = document.getElementById("letter-0");
+        const theFirstCard = document.getElementById("0");
         theFirstCard.focus();
     }
 
@@ -107,17 +108,39 @@ class Game {
         }
     }
 
-    tryToSelect(currentCard_id) {
-        this.flipLogic(currentCard_id);
+    tryToSelect(currentLetter_id) {
+        this.gameLogic(currentLetter_id);
     }
 
-    flipLogic(currentCard_id) {
-        this.select(currentCard_id);
+    gameLogic(currentLetter_id) {
+        if (this.selectedLetters.length === 0) {
+            this.select(currentLetter_id);
+            this.selectedLetters.push(currentLetter_id);
+        }
+        else {
+            let lastSelectedLetter_id = this.selectedLetters[this.selectedLetters.length - 1];
+            if (currentLetter_id === lastSelectedLetter_id) {
+                this.select(currentLetter_id);
+                this.selectedLetters.pop();
+            }
+            else {
+                if (Number(currentLetter_id) === Number(lastSelectedLetter_id) + 1 ||
+                    Number(currentLetter_id) === Number(lastSelectedLetter_id) - 1 ||
+                    Number(currentLetter_id) === Number(lastSelectedLetter_id) + this.size ||
+                    Number(currentLetter_id) === Number(lastSelectedLetter_id) - this.size
+                ) {
+                    this.select(currentLetter_id);
+                    this.selectedLetters.push(currentLetter_id);
+                }
+            }
+        }
+
     }
 
     select(id) {
         this.htmlAttrToggle(id, "class", "letter", "letter selected");
     }
+
 
     deactivateOnClickElem(id) {
         document.getElementById(id).removeAttribute("OnClick");
