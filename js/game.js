@@ -58,94 +58,17 @@ class Game {
         this.styleOfLetter = "float: left; height: 0; position: relative;" + this.letterStyleWidth + this.padding_botSize;
         this.selectedLetters = [];
 
-        this.dataWords = globalData;
-        //hardcoded table 3x3
-        this.wordsMatrix = [
-            { "letter": "D", "word": "DOG" }, { "letter": "O", "word": "DOG" }, { "letter": "G", "word": "DOG" },
-            { "letter": "C", "word": "CAT" }, { "letter": "W", "word": "COW" }, { "letter": "O", "word": "COW" },
-            { "letter": "A", "word": "CAT" }, { "letter": "T", "word": "CAT" }, { "letter": "C", "word": "COW" }
-        ]
+        // this.dataWords = globalData;
+        this.wordsMatrix = this.takeHardcodedMatrix(this.size);
     }
 
     createGame() {
-        this.createWordsMatrix();
+        // this.createWordsMatrix();
+
         this.changeScene("main-menu_id", "game-scene_id");
         this.buildGameField(this.size);
         this.autofocusTheFirstLetter();
         this.startTimer();
-    }
-
-    createWordsMatrix() {
-        let wordsArr = this.randomizeWords();
-        console.log(wordsArr);
-    }
-
-    randomizeWords() {
-        const tryToFindNextLengthWords = this.takeRandomLengthArrToFindWords();
-        const uniqeLengthWords = this.getUniqeLengthWords(tryToFindNextLengthWords);
-        const wordsSortByLength = this.getFilterWordData(tryToFindNextLengthWords, uniqeLengthWords);
-
-        let resultWordsArr = [];
-
-        tryToFindNextLengthWords.forEach((wordLength, i) => {
-            let index = uniqeLengthWords.indexOf(wordLength);
-            resultWordsArr.push(wordsSortByLength[index][Game.randomInteger(1, wordsSortByLength[index].length)])
-        });
-
-        return resultWordsArr;
-    }
-
-    getUniqeLengthWords(tryToFindNextLengthWords) {
-        function onlyUnique(value, index, self) {
-            return self.indexOf(value) === index;
-        }
-        return tryToFindNextLengthWords.filter(onlyUnique);
-    }
-
-    getFilterWordData(tryToFindNextLengthWords, uniqeLengthWords) {
-        // deleting all word who can't be in our fill-word
-        let sortedWordsByLength = [];
-        for (let i = 0; i < uniqeLengthWords.length; i++) {
-            sortedWordsByLength[i] = [];
-        }
-        this.dataWords.forEach(word => {
-            if (uniqeLengthWords.indexOf(word.length) !== -1) {
-                let innerArr = sortedWordsByLength[uniqeLengthWords.indexOf(word.length)];
-                innerArr.push(word);
-            }
-        });
-        this.dataWords = null;
-
-        return sortedWordsByLength;
-    }
-
-    static randomInteger(min, max) {
-        let rand = min - 0.5 + Math.random() * (max - min + 1)
-        rand = Math.round(rand);
-        return rand;
-    }
-
-    takeRandomLengthArrToFindWords() {
-        let resultLength = [];
-        let remainingLetters = this.leftLetters;
-        while (remainingLetters > 0) {
-            let findNextWordQualityLetters;
-            if (remainingLetters >= 3) {
-                let max = remainingLetters;
-                if (max > 10) {
-                    max = 10;
-                }
-                findNextWordQualityLetters = Game.randomInteger(3, max)
-                remainingLetters = remainingLetters - findNextWordQualityLetters;
-                resultLength.push(findNextWordQualityLetters);
-            }
-            else {
-                if (remainingLetters !== 0) {
-                    remainingLetters = remainingLetters + resultLength.pop();
-                }
-            }
-        }
-        return resultLength;
     }
 
     changeScene(currentScene, nextScene) {
@@ -370,5 +293,193 @@ class Game {
         if (s < 10) s = "0" + s;
         return String(m) + ":" + String(s) + ":" + String(ms)
     };
+
+    takeHardcodedMatrix(size) {
+        switch (size) {
+            case 3:
+                return [
+                    { "letter": "D", "word": "DOG" }, { "letter": "O", "word": "DOG" }, { "letter": "G", "word": "DOG" },
+                    { "letter": "C", "word": "CAT" }, { "letter": "W", "word": "COW" }, { "letter": "O", "word": "COW" },
+                    { "letter": "A", "word": "CAT" }, { "letter": "T", "word": "CAT" }, { "letter": "C", "word": "COW" }
+                ];
+            case 4:
+                return [
+                    { "letter": "D", "word": "DOG" }, { "letter": "O", "word": "DOG" }, { "letter": "G", "word": "DOG" }, { "letter": "H", "word": "HELLO" },
+                    { "letter": "C", "word": "CAT" }, { "letter": "W", "word": "COW" }, { "letter": "O", "word": "COW" }, { "letter": "E", "word": "HELLO" },
+                    { "letter": "A", "word": "CAT" }, { "letter": "T", "word": "CAT" }, { "letter": "C", "word": "COW" }, { "letter": "L", "word": "HELLO" },
+                    { "letter": "E", "word": "WE" }, { "letter": "W", "word": "WE" }, { "letter": "O", "word": "HELLO" }, { "letter": "L", "word": "HELLO" }
+                ];
+            case 5:
+                return [
+                    { "letter": "D", "word": "DOG" }, { "letter": "O", "word": "DOG" }, { "letter": "G", "word": "DOG" }, { "letter": "H", "word": "HELLO" }, { "letter": "G", "word": "LONG" },
+                    { "letter": "C", "word": "CAT" }, { "letter": "W", "word": "COW" }, { "letter": "O", "word": "COW" }, { "letter": "E", "word": "HELLO" }, { "letter": "N", "word": "LONG" },
+                    { "letter": "A", "word": "CAT" }, { "letter": "T", "word": "CAT" }, { "letter": "C", "word": "COW" }, { "letter": "L", "word": "HELLO" }, { "letter": "O", "word": "LONG" },
+                    { "letter": "E", "word": "WE" }, { "letter": "W", "word": "WE" }, { "letter": "O", "word": "HELLO" }, { "letter": "L", "word": "HELLO" }, { "letter": "L", "word": "LONG" },
+                    { "letter": "A", "word": "ALPHA" }, { "letter": "L", "word": "ALPHA" }, { "letter": "P", "word": "ALPHA" }, { "letter": "H", "word": "ALPHA" }, { "letter": "A", "word": "ALPHA" }
+                ];
+            case 6:
+                return [
+                    { "letter": "D", "word": "DOG" },          { "letter": "O", "word": "DOG" },          { "letter": "G", "word": "DOG" },          { "letter": "H", "word": "HELLO" },        { "letter": "G", "word": "LONG" },           { "letter": "N", "word": "AFFILIATION" },
+                    { "letter": "C", "word": "CAT" },          { "letter": "W", "word": "COW" },          { "letter": "O", "word": "COW" },          { "letter": "E", "word": "HELLO" },        { "letter": "N", "word": "LONG" },           { "letter": "O", "word": "AFFILIATION" },
+                    { "letter": "A", "word": "CAT" },          { "letter": "T", "word": "CAT" },          { "letter": "C", "word": "COW" },          { "letter": "L", "word": "HELLO" },        { "letter": "O", "word": "LONG" },           { "letter": "I", "word": "AFFILIATION" },
+                    { "letter": "E", "word": "WE" },           { "letter": "W", "word": "WE" },           { "letter": "O", "word": "HELLO" },        { "letter": "L", "word": "HELLO" },        { "letter": "L", "word": "LONG" },           { "letter": "T", "word": "AFFILIATION" },
+                    { "letter": "A", "word": "ALPHA" },        { "letter": "L", "word": "ALPHA" },        { "letter": "P", "word": "ALPHA" },        { "letter": "H", "word": "ALPHA" },        { "letter": "A", "word": "ALPHA" },          { "letter": "A", "word": "AFFILIATION" },
+                    { "letter": "A", "word": "AFFILIATION" },  { "letter": "F", "word": "AFFILIATION" },  { "letter": "F", "word": "AFFILIATION" },  { "letter": "I", "word": "AFFILIATION" },  { "letter": "L", "word": "AFFILIATION" },    { "letter": "I", "word": "AFFILIATION" }
+                ];
+            case 7:
+                return [
+                    { "letter": "D", "word": "DDDDDD" },               { "letter": "D", "word": "DDDDDD" },                { "letter": "A", "word": "AAAAAAAAA" },               { "letter": "H", "word": "HELLO" },                { "letter": "G", "word": "LONG" },                       { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },
+                    { "letter": "D", "word": "DDDDDD" },               { "letter": "D", "word": "DDDDDD" },                { "letter": "A", "word": "AAAAAAAAA" },               { "letter": "E", "word": "HELLO" },                { "letter": "N", "word": "LONG" },                       { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },
+                    { "letter": "D", "word": "DDDDDD" },               { "letter": "D", "word": "DDDDDD" },                { "letter": "A", "word": "AAAAAAAAA" },               { "letter": "L", "word": "HELLO" },                { "letter": "O", "word": "LONG" },                       { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },
+                    { "letter": "E", "word": "WE" },                   { "letter": "W", "word": "WE" },                    { "letter": "A", "word": "AAAAAAAAA" },               { "letter": "L", "word": "HELLO" },                { "letter": "L", "word": "LONG" },                       { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },
+                    { "letter": "A", "word": "AAAAAAAAA" },            { "letter": "A", "word": "ALPHA" },                 { "letter": "A", "word": "AAAAAAAAA" },               { "letter": "O", "word": "HELLO" },                { "letter": "S", "word": "RESET" },                      { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },
+                    { "letter": "A", "word": "AAAAAAAAA" },            { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "A", "word": "AAAAAAAAA" },               { "letter": "R", "word": "RESET" },                { "letter": "E", "word": "RESET" },                      { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },
+                    { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },     { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },        { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" },   { "letter": "K", "word": "KKKKKKKKKKKKKKKKKKK" }
+                ];
+            case 8:
+                return [
+                    { "letter": "D", "word": "DDDDDD" },          { "letter": "D", "word": "DDDDDD" },          { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "H", "word": "HELLO" },           { "letter": "G", "word": "LONG" },                  { "letter": "P", "word": "PPPPPP" },               { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },    
+                    { "letter": "D", "word": "DDDDDD" },          { "letter": "D", "word": "DDDDDD" },          { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "E", "word": "HELLO" },           { "letter": "N", "word": "LONG" },                  { "letter": "P", "word": "PPPPPP" },               { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },    
+                    { "letter": "D", "word": "DDDDDD" },          { "letter": "D", "word": "DDDDDD" },          { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "L", "word": "HELLO" },           { "letter": "O", "word": "LONG" },                  { "letter": "P", "word": "PPPPPP" },               { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },    
+                    { "letter": "E", "word": "WE" },              { "letter": "W", "word": "WE" },              { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "L", "word": "HELLO" },           { "letter": "L", "word": "LONG" },                  { "letter": "P", "word": "PPPPPP" },               { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },    
+                    { "letter": "A", "word": "AAAAAAAAA" },       { "letter": "A", "word": "ALPHA" },           { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "O", "word": "HELLO" },           { "letter": "S", "word": "RESET" },                 { "letter": "P", "word": "PPPPPP" },               { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },    
+                    { "letter": "A", "word": "AAAAAAAAA" },       { "letter": "A", "word": "AAAAAAAAA" },       { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "R", "word": "RESET" },           { "letter": "E", "word": "RESET" },                 { "letter": "P", "word": "PPPPPP" },                { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },     
+                    { "letter": "K", "word": "KKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKK" },     { "letter": "K", "word": "KKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKK" },        { "letter": "K", "word": "KKKKKKKKKKKKK" },         { "letter": "K", "word": "KKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },
+                    { "letter": "M", "word": "MMMMMMMMMMMMMMM" },  { "letter": "M", "word": "MMMMMMMMMMMMMMM" },  { "letter": "M", "word": "MMMMMMMMMMMMMMM" },     { "letter": "M", "word": "MMMMMMMMMMMMMMM" },  { "letter": "M", "word": "MMMMMMMMMMMMMMM" },        { "letter": "M", "word": "MMMMMMMMMMMMMMM" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" }                   
+                 ];
+            case 9:
+                return [
+                     { "letter": "D", "word": "DDDDDD" },          { "letter": "D", "word": "DDDDDD" },          { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "H", "word": "HELLO" },           { "letter": "G", "word": "LONG" },                  { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                        { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   
+                     { "letter": "D", "word": "DDDDDD" },          { "letter": "D", "word": "DDDDDD" },          { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "E", "word": "HELLO" },           { "letter": "N", "word": "LONG" },                  { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                        { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  
+                     { "letter": "D", "word": "DDDDDD" },          { "letter": "D", "word": "DDDDDD" },          { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "L", "word": "HELLO" },           { "letter": "O", "word": "LONG" },                  { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                         { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" }, 
+                     { "letter": "E", "word": "WE" },              { "letter": "W", "word": "WE" },              { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "L", "word": "HELLO" },           { "letter": "L", "word": "LONG" },                  { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                         { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" }, 
+                     { "letter": "A", "word": "AAAAAAAAA" },       { "letter": "A", "word": "ALPHA" },           { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "O", "word": "HELLO" },           { "letter": "S", "word": "RESET" },                 { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                          { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" }, 
+                     { "letter": "A", "word": "AAAAAAAAA" },       { "letter": "A", "word": "AAAAAAAAA" },       { "letter": "A", "word": "AAAAAAAAA" },          { "letter": "R", "word": "RESET" },           { "letter": "E", "word": "RESET" },                 { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                            { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" }, 
+                     { "letter": "K", "word": "KKKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKKK" },     { "letter": "K", "word": "KKKKKKKKKKKKKK" },  { "letter": "K", "word": "KKKKKKKKKKKKKK" },        { "letter": "K", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "KKKKKKKKKKKKKK" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                            { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" }, 
+                     { "letter": "M", "word": "MMMMMMMMMMMMMMM" },  { "letter": "M", "word": "MMMMMMMMMMMMMMM" },  { "letter": "M", "word": "MMMMMMMMMMMMMMM" },     { "letter": "M", "word": "MMMMMMMMMMMMMMM" },  { "letter": "M", "word": "MMMMMMMMMMMMMMM" },        { "letter": "M", "word": "MMMMMMMMMMMMMMM" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },                   { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },
+                     { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },     { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },        { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },    { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" }                  
+                  ];
+                  case 10:
+                return [
+                       { "letter": "D", "word": "DDDDDD" },              { "letter": "D", "word": "DDDDDD" },            { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "H", "word": "HELLO" },              { "letter": "G", "word": "LONG" },                     { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },  
+                       { "letter": "D", "word": "DDDDDD" },              { "letter": "D", "word": "DDDDDD" },            { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "E", "word": "HELLO" },              { "letter": "N", "word": "LONG" },                     { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "D", "word": "DDDDDD" },              { "letter": "D", "word": "DDDDDD" },            { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "L", "word": "HELLO" },              { "letter": "O", "word": "LONG" },                     { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "E", "word": "WE" },                  { "letter": "W", "word": "WE" },                { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "L", "word": "HELLO" },              { "letter": "L", "word": "LONG" },                     { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "A", "word": "AAAAAAAAA" },           { "letter": "A", "word": "ALPHA" },             { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "O", "word": "HELLO" },              { "letter": "S", "word": "RESET" },                    { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "A", "word": "AAAAAAAAA" },           { "letter": "A", "word": "AAAAAAAAA" },         { "letter": "A", "word": "AAAAAAAAA" },             { "letter": "R", "word": "RESET" },              { "letter": "E", "word": "RESET" },                    { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "K", "word": "KKKKKKKKKKKKKK" },    { "letter": "K", "word": "KKKKKKKKKKKKKK" },        { "letter": "K", "word": "KKKKKKKKKKKKKK" },     { "letter": "K", "word": "KKKKKKKKKKKKKK" },           { "letter": "K", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "KKKKKKKKKKKKKK" },      { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "M", "word": "MMMMMMMMMMMMMMM" },     { "letter": "M", "word": "MMMMMMMMMMMMMMM" },   { "letter": "M", "word": "MMMMMMMMMMMMMMM" },       { "letter": "M", "word": "MMMMMMMMMMMMMMM" },    { "letter": "M", "word": "MMMMMMMMMMMMMMM" },          { "letter": "M", "word": "MMMMMMMMMMMMMMM" },     { "letter": "M", "word": "MMMMMMMMMMMMMMM" },     { "letter": "M", "word": "MMMMMMMMMMMMMMM" },               { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },
+                       { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },     { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },  { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },        { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },             { "letter": "Z", "word": "ZZZZZZZZZZZZZZZZZ" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },                 
+                       { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },  { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },  { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },     { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },  { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },        { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },             { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" },   { "letter": "X", "word": "XXXXXXXXXXXXXXXXXXX" }
+                    ];
+
+        }
+
+
+
+        return matrix;
+    }
+
+
+
+
+    // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    // next code for future generator matrixs
+
+    createWordsMatrix() {
+        let wordsArr = this.randomizeWords();
+
+        let indexWord = 0;
+        let count = 0;
+        let matrix = new Array(this.size);
+        let remainWords = wordsArr.length;
+        while (indexWord < remainWords && count < 100000) {
+            count++;
+
+            let randomedIndex = Game.randomInteger(0, this.size);
+            if (typeof (matrix[randomedIndex]) !== "undefined") {
+                if (this.tryToSetWord(indexWord, randomedIndex) == true) {
+                    indexWord++;
+                }
+
+            }
+
+        }
+        console.log(wordsArr);
+    }
+
+    tryToSetWord(indexWord, startPointIndex) {
+        let lengthWord = wordsArr.length;
+        for (let indexLetter = 0; indexLetter < lengthWord; indexLetter++) {
+            matrix[i] = wordsArr[index][indexLetter];
+        }
+    }
+
+    randomizeWords() {
+        const tryToFindNextLengthWords = this.takeRandomLengthArrToFindWords();
+        const uniqeLengthWords = this.getUniqeLengthWords(tryToFindNextLengthWords);
+        const wordsSortByLength = this.getFilterWordData(tryToFindNextLengthWords, uniqeLengthWords);
+
+        let resultWordsArr = [];
+
+        tryToFindNextLengthWords.forEach((wordLength, i) => {
+            let index = uniqeLengthWords.indexOf(wordLength);
+            resultWordsArr.push(wordsSortByLength[index][Game.randomInteger(1, wordsSortByLength[index].length)])
+        });
+
+        return resultWordsArr;
+    }
+    getUniqeLengthWords(tryToFindNextLengthWords) {
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+        return tryToFindNextLengthWords.filter(onlyUnique);
+    }
+
+    getFilterWordData(tryToFindNextLengthWords, uniqeLengthWords) {
+        // deleting all word who can't be in our fill-word
+        let sortedWordsByLength = [];
+        for (let i = 0; i < uniqeLengthWords.length; i++) {
+            sortedWordsByLength[i] = [];
+        }
+        this.dataWords.forEach(word => {
+            if (uniqeLengthWords.indexOf(word.length) !== -1) {
+                let innerArr = sortedWordsByLength[uniqeLengthWords.indexOf(word.length)];
+                innerArr.push(word);
+            }
+        });
+        this.dataWords = null;
+
+        return sortedWordsByLength;
+    }
+
+    static randomInteger(min, max) {
+        let rand = min - 0.5 + Math.random() * (max - min + 1)
+        rand = Math.round(rand);
+        return rand;
+    }
+
+    takeRandomLengthArrToFindWords() {
+        let resultLength = [];
+        let remainingLetters = this.leftLetters;
+        while (remainingLetters > 0) {
+            let findNextWordQualityLetters;
+            if (remainingLetters >= 3) {
+                let max = remainingLetters;
+                if (max > 10) {
+                    max = 10;
+                }
+                findNextWordQualityLetters = Game.randomInteger(3, max)
+                remainingLetters = remainingLetters - findNextWordQualityLetters;
+                resultLength.push(findNextWordQualityLetters);
+            }
+            else {
+                if (remainingLetters !== 0) {
+                    remainingLetters = remainingLetters + resultLength.pop();
+                }
+            }
+        }
+        return resultLength;
+    }
 
 }
