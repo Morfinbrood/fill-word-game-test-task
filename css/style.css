@@ -75,7 +75,7 @@ h1 {
     margin: auto;
     text-align: center;
     font-weight: bold;
-    color: rgb(0, 128, 21);
+    color: black;
 }
 
 .win-scene ol {
@@ -84,19 +84,8 @@ h1 {
     margin: auto;
 }
 
-.win-scene li {
-    /* margin-top: 20px; */
-}
-
 .record-time {
     float: left;
-}
-
-.record-name {
-    float: right;
-    /* max-width: 380px; */
-    overflow: hidden;
-    /* max-height: 20px; */
 }
 
 /* fade in */
@@ -109,5 +98,5 @@ h1 {
 
 .fade-in {
     opacity: 1;
-    animation: fadeIn 2s ease-in 1 forwards;
+    animation: fadeIn 1s ease-in 1 forwards;
 }

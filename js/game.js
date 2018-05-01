@@ -154,6 +154,11 @@ class Game {
             this.fadeInFindedWord(this.selectedLetters);
             this.leftLetters = this.leftLetters - this.selectedLetters.length;
             this.selectedLetters = [];
+            if (this.chkWinCondition()) {
+                clearTimeout(this.setTimeOutTimer);
+                this.chkAndUpdateTop10LocalStorageRecords(this.name_localStorage, this.time, this.user_data);
+                this.showWinSceneWithDelay(2000);
+            }
         }
 
     }
@@ -221,15 +226,6 @@ class Game {
         timerSec();
     }
 
-    flipBothCardsWithDelay(id1, id2, ms) {
-        const that = this;
-        function enabler() {
-            that.select(id1);
-            that.select(id2);
-        }
-        setTimeout(enabler, ms);
-    }
-
     showWinSceneWithDelay(ms) {
         const that = this;
         this.setTableOfRecords();
@@ -250,15 +246,12 @@ class Game {
                 let time = document.createElement('div');
                 time.setAttribute("class", "record-time");
                 time.textContent = this.convertMS(recordObj.time);
-                let name = document.createElement('div');
-                name.setAttribute("class", "record-name");
-                if (recordObj.user_data.first_name === "" && recordObj.user_data.last_name === "") {
-                    name.textContent = "non registred player"
+                if (recordObj.user_data.nickname === "") {
+                    time.textContent = time.textContent + " unknown";
                 } else {
-                    name.textContent = recordObj.user_data.first_name + " " + recordObj.user_data.last_name;
+                    time.textContent = time.textContent + " " + recordObj.user_data.nickname;
                 }
                 listElem.appendChild(time);
-                listElem.appendChild(name);
             }
             list.appendChild(listElem);
         });
