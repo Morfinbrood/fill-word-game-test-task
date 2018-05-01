@@ -157,7 +157,7 @@ class Game {
             if (this.chkWinCondition()) {
                 clearTimeout(this.setTimeOutTimer);
                 this.chkAndUpdateTop10LocalStorageRecords(this.name_localStorage, this.time, this.user_data);
-                this.showWinSceneWithDelay(2000);
+                this.showWinSceneWithDelay(1000);
             }
         }
 
