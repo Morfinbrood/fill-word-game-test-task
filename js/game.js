@@ -50,7 +50,7 @@ class Game {
         this.size = size;
         this.time = 0;
         this.setTimeOutTimer;
-        this.wordscore_guessed_words = 0;
+        this.leftLetters = this.size ** 2;
         this.name_localStorage = 'game_records-' + this.size;
         this.selectedLetters = [];
         this.letterStyleWidth = "width: " + 100 / this.size + "%;";
@@ -149,6 +149,27 @@ class Game {
             }
         }
 
+        if (this.selectedLetters.length > 0 && this.isWordCompleted()) {
+            this.deactivateOnClickElems(this.selectedLetters);
+            this.fadeInFindedWord(this.selectedLetters);
+            this.leftLetters = this.leftLetters - this.selectedLetters.length;
+            this.selectedLetters = [];
+        }
+
+    }
+
+    isWordCompleted() {
+        const guessedWordFromFirstSelectLetter = this.wordsMatrix[Number(this.selectedLetters[0])].word;
+        let currentWord = "";
+        const wordsMatrixTemp = this.wordsMatrix
+        this.selectedLetters.forEach(function (idLetter) {
+            currentWord = currentWord + wordsMatrixTemp[Number(idLetter)].letter;
+            if (wordsMatrixTemp[Number(idLetter)].word !== guessedWordFromFirstSelectLetter) {
+                // for cases when word = current word but letters taken from different guessed words
+                return false;
+            }
+        })
+        return guessedWordFromFirstSelectLetter === currentWord;
     }
 
     select(id) {
@@ -156,12 +177,17 @@ class Game {
     }
 
 
-    deactivateOnClickElem(id) {
-        document.getElementById(id).removeAttribute("OnClick");
+    deactivateOnClickElems(collectionID) {
+        collectionID.forEach(function (id) {
+            document.getElementById(id).removeAttribute("OnClick");
+        })
     }
 
-    fade_in_letter_container(id) {
-        document.getElementById(id).parentElement.setAttribute("class", "letter-container fade-in");
+    fadeInFindedWord(collectionID) {
+        collectionID.forEach(function (id) {
+            document.getElementById(id).removeAttribute("OnClick");
+            document.getElementById(id).setAttribute("class", "letter fade-in");
+        })
     }
 
     htmlAttrToggle(id, attr, toggleClassOn, toggleClassOff) {
@@ -173,13 +199,8 @@ class Game {
         }
     }
 
-    getBackgImgCard(id) {
-        const frontCard = document.getElementById(id).firstElementChild;
-        return frontCard.style.background;;
-    }
-
     chkWinCondition() {
-        return this.wordscore_guessed_words === this.size / 2;
+        return this.leftLetters === 0;
     }
 
     showCongrat() {
