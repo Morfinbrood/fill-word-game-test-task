@@ -113,19 +113,22 @@ class Game {
     }
 
     gameLogic(currentLetter_id) {
+        // enable selecting for the first selecting
         if (this.selectedLetters.length === 0) {
             this.select(currentLetter_id);
             this.selectedLetters.push(currentLetter_id);
         }
         else {
             let lastSelectedLetter_id = this.selectedLetters[this.selectedLetters.length - 1];
+            // enable unselecting last selected letter
             if (currentLetter_id === lastSelectedLetter_id) {
                 this.select(currentLetter_id);
                 this.selectedLetters.pop();
             }
             else {
-                // disable selecting stil selected elements
+                // disable selecting already selected elements
                 if (this.selectedLetters.indexOf(currentLetter_id) === -1) {
+                    // enable selecting near letters
                     if (Number(currentLetter_id) === Number(lastSelectedLetter_id) + 1 ||
                         Number(currentLetter_id) === Number(lastSelectedLetter_id) - 1 ||
                         Number(currentLetter_id) === Number(lastSelectedLetter_id) + this.size ||
